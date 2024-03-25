@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
-
+  const contactUsRef = useRef(null);
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -18,6 +18,11 @@ export default function Header() {
   };
 
   const pathMatchRoute = (route) => location.pathname === route;
+  useEffect(() => {
+    if (location.pathname === '/contact') {
+      contactUsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location.pathname]);
 
   return (
     <div className="bg-black sticky top-0 z-40">
@@ -43,19 +48,24 @@ export default function Header() {
         <div >
         <ul className="flex space-x-10">
             <li 
-             className={`rounded-box rounded-full p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${pathMatchRoute("/") && "text-purple-300 shadow-[0_0_10px_purple]"}`} 
+             className={`rounded-box rounded-full p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${pathMatchRoute("/") && "text-purple-300 shadow-[0_0_20px_purple]"}`} 
              onClick={() => navigate("/")}>
                 Home
             </li>
             <li 
-             className={`rounded-box rounded-full p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${pathMatchRoute("/") && "text-purple-300 shadow-[0_0_10px_purple]"}`} 
-             onClick={() => navigate("/")}>
+             className={`rounded-box rounded-full p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${
+              pathMatchRoute('/contact') && 'text-purple-300 shadow-[0_0_20px_purple]'
+            }`}
+            onClick={() => {
+              navigate('/');
+              contactUsRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }}>
                 Contact
             </li>
             <li 
-             className={`rounded-box rounded-full w-20 p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${pathMatchRoute("/") && "text-purple-300 shadow-[0_0_10px_purple]"}`} 
+             className={`rounded-box rounded-full w-20 p-4 cursor-pointer hover:bg-purple-400 py-3 text-sm font-semibold text-white ${pathMatchRoute("/sign-in") && "text-purple-300 shadow-[0_0_20px_purple]"}`} 
              onClick={() => navigate("/sign-in")}>
-                Sign In
+                Login
             </li>
           </ul>
         </div>

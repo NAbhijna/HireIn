@@ -1,6 +1,18 @@
 import React from 'react';
 import { useState } from 'react';
+import {
+  Card,
+  CardBody,
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+} from "@material-tailwind/react";
+import {FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
+
+  
 export default function SignIn() {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -10,34 +22,56 @@ export default function SignIn() {
     phoneNumber: "",
   });
   const { fullName, email, password, confirmPassword, phoneNumber } = formData;
-
+  const [showPassword, setShowPassword]=useState(false);
+  const [type, setType] = React.useState("Recruiter");
+  
   function onChange(e) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
+  
 
   return (
-    <section className="flex justify-center items-center h-screen">
+    <section className="flex justify-center items-center h-[80vh] mt-10  ">
       {/* Image container (unchanged) */}
-      <div className="w-1/3 h-full relative">
-        <img src="https://img.freepik.com/free-vector/new-job-concept-illustration_114360-23770.jpg?t=st=1711284203~exp=1711287803~hmac=5c79b1a10c831a4e5ed66a679bcea37ae50f6d3d29694f9742dcf0a71ebb5d10&w=740"
-        alt="Job" className="w-[80%] mt-40 ml-40 rounded"/>
-      </div>
+     
 
       {/* Form container */}
-      <div className="w- h-full px-8 py-12 flex flex-col items-center justify-center z-30">
-        <h1 className="text-black text-3xl text-center mb-6 font-bold">Sign In</h1>
-        <form className="w-1/3 px-8 py-6 bg-white/20 text-white rounded-lg"> {/* Consistent styles for form */}
-          <input
-            type="text"
-            id="fullName"
-            value={fullName}
-            onChange={onChange}
-            placeholder="Full Name"
-            className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out"
-          />
+      <Card className="w-full max-w-[24rem] shadow-[0_0_200px_purple] backdrop-filter backdrop-blur-md bg-transparent rounded-lg">
+      <CardBody className="bg-transparent flex flex-col py-2">
+        <Tabs value={type} className="overflow-visible">
+          <TabsHeader className="relative z-0 bg-purple-70">
+            <Tab value="card" className="text-purple-300" >
+              Candidate
+            </Tab>
+            <Tab value="paypal" className="text-purple-300" >
+              Recruiter
+            </Tab>
+          </TabsHeader>
+          <TabsBody
+            className="!overflow-x-hidden !overflow-y-visible"
+            animate={{
+              initial: {
+                x: type === "card" ? 400 : -400,
+              },
+              mount: {
+                x: 0,
+              },
+              unmount: {
+                x: type === "card" ? 400 : -400,
+              },
+            }}
+          >
+            </TabsBody>
+            </Tabs>
+            
+
+      {/* Form container */}
+      <div className="w-full h-full px-8 py-8 flex flex-col items-center justify-center z-30 ">
+        <h1 className="text-white text-3xl text-center mb-6 font-bold">Log In</h1>
+        <form className="w-1/3 px-8 py-6 flex flex-col items-center  text-white rounded-lg ">
           <input
             type="email"
             id="email"
@@ -45,36 +79,47 @@ export default function SignIn() {
             onChange={onChange}
             placeholder="Email address"
             className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out mt-4"
-          />
+            />
+            
+            <div className="relative mb-">
+           
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             value={password}
             onChange={onChange}
             placeholder="Password"
-            className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out mt-4"
-          />
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={onChange}
-            placeholder="Confirm Password"
-            className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out mt-4"
-          />
-          <input
-            type="tel"
-            id="phoneNumber"
-            value={phoneNumber}
-            onChange={onChange}
-            placeholder="Phone Number"
-            className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out mt-4"
-          />
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4">
-            Sign In
-          </button>
+            className="border-b border-white border-opacity-30 bg-transparent p-2 placeholder:text-white outline-none rounded-full transition ease-in-out mt-4"       
+           />
+            {showPassword ?  (<FaEyeSlash className="absolute right-3 top-7 text-x1 cursor-pointer"
+          onClick={()=>setShowPassword
+          ((prevState)=>!prevState)}/>):(<FaEye className="absolute right-3 top-7 text-x1 cursor-pointer"onClick={()=>setShowPassword
+            ((prevState)=>!prevState)}/>)}
+        </div>
+            
+          
+            
+           <button type="submit" className="bg-purple-700 hover:bg-purple-300 w-[200px] text-white font-bold py-2 px-4 rounded-full mt-5">
+            Login
+          </button> 
+          <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mt-5 mb-1">
+            <p className="text-sm mb-2 ml-7">Don't have an account?
+            <Link to="/sign-up" className="text-red-800 hover:text-red-900 transition duration-200 ease-in-out ml-1 mr-8">Register
+            </Link>
+            </p>
+            {/*<p>
+              <Link to="/forgot-password"className=" text-blue-700 hover:text-blue-800
+               transition duration-200 ease-in-out ml-3 text-sm">Forgot password?</Link>
+            </p>*/}
+          </div>
+
+          
         </form>
       </div>
+            
+
+            </CardBody>
+            </Card>
     </section>
   );
 }

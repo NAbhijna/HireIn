@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ForgotPassword() {
+export default function OAuth() {
   return (
     <div>
-      Forgot Password
+      
     </div>
   )
 }
